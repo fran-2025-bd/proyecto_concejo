@@ -9,6 +9,8 @@ app.secret_key = "clave_super_secreta"
 DATABASE = os.path.join("instance", "users.db")
 
 def init_db():
+    if not os.path.exists("instance"):
+        os.makedirs("instance")
     with sqlite3.connect(DATABASE) as conn:
         conn.execute("""CREATE TABLE IF NOT EXISTS users (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,7 +62,6 @@ def logout():
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    init_db()
     import os
-app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
+    init_db()
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
